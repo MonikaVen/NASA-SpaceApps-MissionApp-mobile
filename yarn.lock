@@ -3593,6 +3593,11 @@ expo-asset@~8.2.0:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
+expo-battery@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/expo-battery/-/expo-battery-3.0.0.tgz#ec3d723071c6c779435f833da934023ae42ac079"
+  integrity sha512-pGZNnebKq0ONfXsFRhaNQMZwolwECl91f+tz33JmS3iz0LyubJWUqV+aIWnz4fkxdYe/h9WnXggTOs+K03Iazw==
+
 expo-constants@~9.2.0:
   version "9.2.0"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.2.0.tgz#e86a38793deaff9018878afac65bce2543c80a4c"
@@ -3642,7 +3647,7 @@ expo-linking@^1.0.1, expo-linking@~1.0.4:
     qs "^6.5.0"
     url-parse "^1.4.4"
 
-expo-location@~9.0.0:
+expo-location@^9.0.0, expo-location@~9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/expo-location/-/expo-location-9.0.0.tgz#43906dbd503803f6029a814df51f0370c3b4a765"
   integrity sha512-HsPyn/S73LS/LKpK0Cd/H9Dm9PohbnojYUM475s9DEeOBQitYbnSCKNdSz5vkG+Fqqh6mh4eHPy9dF/21I2rkg==

@@ -19,8 +19,8 @@ export default function TabOneScreen() {
       <Text>{messageState}</Text>
       <Button title="Say hello to Mars Orbiter!" onPress={retrieveMessage}></Button>
       <Text></Text>
-      {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" /> */}
-      {/* <EditScreenInfo path="/screens/TabOneScreen.js" /> */}
+      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <EditScreenInfo path="/screens/TabOneScreen.js" />
     </View>
   );
 }
