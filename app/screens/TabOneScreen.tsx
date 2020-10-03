@@ -15,7 +15,11 @@ export default function TabOneScreen() {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Mission</Text>
+      <Text >Hello Martian!</Text>
+      <Text style={styles.title}>Today you will be permoning a mission on a surface of Mars</Text>
+      <Text>You will send data to Earth</Text>
+      <Text></Text>
+      <Text style={styles.title}>Misssion</Text>
       <Text>{messageState}</Text>
       <Button title="Say hello to Mars Orbiter!" onPress={retrieveMessage}></Button>
       <Text></Text>

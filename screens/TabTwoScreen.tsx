@@ -3,7 +3,11 @@ import { Button, StyleSheet, TextInput } from 'react-native';
 import * as Battery from 'expo-battery';
 import * as Location from 'expo-location';
 import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import { Text, View, Dimensions } from '../components/Themed';
+import {
+  WebView
+} from 'react-native-webview'
+import html_script from './html_script'
 // import {
 //   Accelerometer,
 //   Barometer,
@@ -48,8 +52,7 @@ export default function TabTwoScreen() {
     const batteryLevel = await Battery.getBatteryLevelAsync();
     return batteryLevel
   }
-  const [value, onChangeText] = React.useState('');
-  const [message, setMessage] = React.useState({ message: value});
+
   const update = async () => {
     getLocationStamp();
   }
@@ -59,14 +62,12 @@ export default function TabTwoScreen() {
     //axios.post('http://ec2-52-15-90-21.us-east-2.compute.amazonaws.com:3000/rover', momentState).then((res)=> setDataSentMessage(JSON.stringify(res.data)))
 
   }
-  const sendMessage = () => {
-    setMessage({message: value})
-    axios.post('http://ec2-52-15-90-21.us-east-2.compute.amazonaws.com:3000/earth', message).then((res) => console.log(res));
-  } 
+
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Rover Data</Text>
+      <WebView ref={'Map_Ref'}  source={{html: html_script }}/>
       <Text>x: {momentState.x}</Text>
       <Text>y: {momentState.y}</Text>
       <Text>z: {momentState.z}</Text>
@@ -74,17 +75,11 @@ export default function TabTwoScreen() {
       <Text>b: {momentState.b*100}%</Text>
       <Text>speed: {momentState.speed}</Text>
       <Button title="Update" onPress={update}></Button>
-      {/* <Text>{dataSentMessage}</Text> */}
+      <Text>{dataSentMessage}</Text>
       <Button title="Send data" onPress={sendData}></Button>
-      <TextInput 
-        placeholder="Type message for Earth"
-        onChangeText={text => onChangeText(text)}
-        value={value}
-        blurOnSubmit={true}
-      />
-      <Button onPress={sendMessage}></Button>
+
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabTwoScreen.js" />
+      {/* <EditScreenInfo path="/screens/TabTwoScreen.js" /> */}
     </View>
   );
 }
