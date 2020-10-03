@@ -3,11 +3,9 @@ import { Button, StyleSheet, TextInput } from 'react-native';
 import * as Battery from 'expo-battery';
 import * as Location from 'expo-location';
 import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View, Dimensions } from '../components/Themed';
-import {
-  WebView
-} from 'react-native-webview'
-import html_script from './html_script'
+import { Text, View } from '../components/Themed';
+
+import { DeviceMotion } from 'expo-sensors';
 // import {
 //   Accelerometer,
 //   Barometer,
@@ -18,6 +16,7 @@ import html_script from './html_script'
 // } from 'expo-sensors';
 import axios from 'axios';
 export default function TabTwoScreen() {
+  const [rot, setRot] = React.useState(0)
   const [momentState, setMomentState] = React.useState({
     id: '',
     x: null,
@@ -26,11 +25,17 @@ export default function TabTwoScreen() {
     t: null,
     speed: null,
     b: null,
+    r: null,
   })
   const [dataSentMessage, setDataSentMessage ] = React.useState(
     'Data not sent yet.'
   )
+  setInterval(() => {
+    update();
+    sendData();
+  }, 1000);
   const getLocationStamp = async () => {
+      rotation();
       let { status } = await Location.requestPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
@@ -44,7 +49,10 @@ export default function TabTwoScreen() {
         z: locationStamp.coords.altitude,
         t: locationStamp.timestamp,
         speed: locationStamp.coords.speed,
-        b: battery
+        b: battery,
+        alpha: rot.alpha,
+        beta: rot.beta,
+        gamma: rot.gamma,
       })
       console.log(locationStamp.coords)
   }
@@ -52,7 +60,18 @@ export default function TabTwoScreen() {
     const batteryLevel = await Battery.getBatteryLevelAsync();
     return batteryLevel
   }
+  const rotation = () => {
+    if(DeviceMotion.isAvailableAsync()){
+      DeviceMotion.setUpdateInterval(1000)
+      let subscription = DeviceMotion.addListener(motionData => {
+        if(motionData){
+          setRot(motionData.rotation);
+          console.log(motionData.rotation);
+        }
+      });
+    }
 
+  }
   const update = async () => {
     getLocationStamp();
   }
@@ -67,13 +86,15 @@ export default function TabTwoScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Rover Data</Text>
-      <WebView ref={'Map_Ref'}  source={{html: html_script }}/>
       <Text>x: {momentState.x}</Text>
       <Text>y: {momentState.y}</Text>
       <Text>z: {momentState.z}</Text>
       <Text>t: {momentState.t}</Text>
       <Text>b: {momentState.b*100}%</Text>
       <Text>speed: {momentState.speed}</Text>
+      <Text>rotation alpha: {momentState.alpha}</Text>
+      <Text>rotation beta: {momentState.beta}</Text>
+      <Text>rotation gamma: {momentState.gamma}</Text>
       <Button title="Update" onPress={update}></Button>
       <Text>{dataSentMessage}</Text>
       <Button title="Send data" onPress={sendData}></Button>
