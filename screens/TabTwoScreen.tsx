@@ -20,15 +20,16 @@ export default function TabTwoScreen() {
     t: null,
     speed: null,
     b: null,
-    r: null,
+    alpha: 0,
+    beta: 0,
+    gamma: 0,
   })
   const [dataSentMessage, setDataSentMessage ] = React.useState(
     'Data not sent yet.'
   )
   // setInterval(() => {
-  //   update();
-  //   sendData();
-  // }, 10000);
+  //    update();
+  // }, 1000);
   const MAPPING = [
     {
       id: '0',
@@ -62,7 +63,7 @@ export default function TabTwoScreen() {
         beta: rot.beta,
         gamma: rot.gamma,
       })
-      console.log(locationStamp.coords)
+      // console.log(locationStamp.coords)
   }
   const batteryLevel = async () => {
     const batteryLevel = await Battery.getBatteryLevelAsync();
@@ -82,14 +83,30 @@ export default function TabTwoScreen() {
   }
   const getPicture = () => {
     console.log('getting pic...')
-    const alpha = { "alpha": momentState.alpha }
-    console.log(alpha)
-    axios.post('http://esa-archive.hellomars.co/takepic', alpha).then( (res) => {
-      console.log(res)
-      setPic(res)
-    })
+    // if (momentState.alpha < 3){
+    //   setPic('https://nasa2020-canyouhearmenow-mars-bucket.s3.eu-north-1.amazonaws.com/0.jpg')
+    // } else {
+    //   setPic('https://nasa2020-canyouhearmenow-mars-bucket.s3.eu-north-1.amazonaws.com/1.jpg')     
+    // }
+    console.log(momentState)
+    axios.post('http://esa-archive.hellomars.co/takepic', momentState).then(resp => {
+    console.log(resp.data);
+    setPic(resp.data)
+});
+    
+    // setPic('https://nasa2020-canyouhearmenow-mars-bucket.s3.eu-north-1.amazonaws.com/1.jpg')
     return 'this is the picture, instead of this text'
   }
+  // const getPicture = () => {
+  //   console.log('getting pic...')
+  //   const alpha = { "alpha": momentState.alpha }
+  //   console.log(alpha)
+  //   axios.post('http://esa-archive.hellomars.co/takepic', alpha).then( (res) => {
+  //     console.log(res)
+  //     setPic(res)
+  //   })
+  //   return 'this is the picture, instead of this text'
+  // }
   const goodAzimuth = () => {
     //momentState.alpha > 1.57
     if (true){
@@ -113,7 +130,9 @@ export default function TabTwoScreen() {
     if (pic) {
       let element = (
       <View>
-        <Text>This is the picture</Text>
+        <Image source={{uri: pic}}
+            style={{width: 300, height: 200}} />
+        <Text>Well done! Mission Control says thank you!</Text>
         <Button title="End Mission"> </Button>
       </View>
 
@@ -130,22 +149,19 @@ export default function TabTwoScreen() {
       <Text style={styles.item}>b: {(momentState.b*100).toFixed(2)}%</Text>
       <Text style={styles.item}>speed: {momentState.speed}</Text>
 
-      {/* <Text>beta: {Number(momentState.beta).toFixed(5)}</Text>
-      <Text>gamma: {Number(momentState.gamma).toFixed(5)}</Text> */}
+      <Text>beta: {Number(momentState.beta).toFixed(5)}</Text>
+      <Text>gamma: {Number(momentState.gamma).toFixed(5)}</Text>
       </View>
       <Text>Azimuth: {momentState.alpha}</Text>
-      <Button title="Take Picture" onPress={sendData}></Button>
+      <Button title="Send Data" onPress={sendData}></Button>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
       <Text>Mission Control asks you to take the picture</Text>
       <Text>of the crater. You will have to </Text>
       <Text>turn your phone as instructed:</Text>
       <Text>Azimuth has to be between 1.57 and 3.14</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      {goodAzimuth()}
-      
-
-      {/* <EditScreenInfo path="/screens/TabTwoScreen.js" /> */}
+      {goodAzimuth()} 
+      {/* <EditScreenInfo path="/screens/TabTwoScreen.js" />*/}
     </View>
 
     )
@@ -154,7 +170,7 @@ export default function TabTwoScreen() {
 const crater = () => {
   return (
     <ImageMapper
-      imgHeight={300}
+      imgHeight={250}
       imgWidth={300}
       imgSource={imageSource}
       imgMap={MAPPING}
@@ -196,6 +212,6 @@ const styles = StyleSheet.create({
   },
   item: {
     width: '33%',
-    padding: '0.5em'
+    padding: 20
   }
 });
