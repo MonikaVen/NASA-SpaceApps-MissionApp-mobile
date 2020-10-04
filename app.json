@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "mars_app_earth",
+    "slug": "mars_app_earth",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -23,6 +23,7 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "description": ""
   }
 }

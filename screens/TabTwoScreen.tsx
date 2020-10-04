@@ -22,7 +22,7 @@ export default function TabTwoScreen() {
     b: null,
     alpha: 0,
     beta: 0,
-    gamma: 0,
+    gamma: 0
   })
   const [dataSentMessage, setDataSentMessage ] = React.useState(
     'Data not sent yet.'
@@ -61,7 +61,7 @@ export default function TabTwoScreen() {
         b: battery,
         alpha: rot.alpha,
         beta: rot.beta,
-        gamma: rot.gamma,
+        gamma: rot.gamma
       })
       // console.log(locationStamp.coords)
   }
@@ -83,16 +83,18 @@ export default function TabTwoScreen() {
   }
   const getPicture = () => {
     console.log('getting pic...')
-    // if (momentState.alpha < 3){
-    //   setPic('https://nasa2020-canyouhearmenow-mars-bucket.s3.eu-north-1.amazonaws.com/0.jpg')
-    // } else {
-    //   setPic('https://nasa2020-canyouhearmenow-mars-bucket.s3.eu-north-1.amazonaws.com/1.jpg')     
-    // }
-    console.log(momentState)
-    axios.post('http://esa-archive.hellomars.co/takepic', momentState).then(resp => {
-    console.log(resp.data);
-    setPic(resp.data)
-});
+    if (momentState.alpha < 3){
+      setPic('https://nasa2020-canyouhearmenow-mars-bucket.s3.eu-north-1.amazonaws.com/0.jpg')
+    } else if (momentState.alpha < 1) {
+      setPic('https://nasa2020-canyouhearmenow-mars-bucket.s3.eu-north-1.amazonaws.com/1.jpg')     
+    } else {
+      setPic('https://nasa2020-canyouhearmenow-mars-bucket.s3.eu-north-1.amazonaws.com/2.jpg')
+    }
+  //   axios.post('http://esa-archive.hellomars.co/takepic', momentState).then(resp => {
+  //   console.log(resp.data);
+
+  // })
+
     
     // setPic('https://nasa2020-canyouhearmenow-mars-bucket.s3.eu-north-1.amazonaws.com/1.jpg')
     return 'this is the picture, instead of this text'
@@ -121,7 +123,7 @@ export default function TabTwoScreen() {
   const sendData = () => {
     console.log('Sending ...')
     update()
-    axios.post('http://esa-archive.hellomars.co:3000/data', momentState).then((res)=> setDataSentMessage('Earth: we recieved your data!'))
+    axios.post('http://esa-archive.hellomars.co:3000/data', (momentState)).then((res)=> setDataSentMessage('Earth: we recieved your data!'))
     //axios.post('http://ec2-52-15-90-21.us-east-2.compute.amazonaws.com:3000/rover', momentState).then((res)=> setDataSentMessage(JSON.stringify(res.data)))
 
   }
