@@ -25,10 +25,10 @@ export default function TabTwoScreen() {
   const [dataSentMessage, setDataSentMessage ] = React.useState(
     'Data not sent yet.'
   )
-  setInterval(() => {
-    update();
-    sendData();
-  }, 1000);
+  // setInterval(() => {
+  //   update();
+  //   sendData();
+  // }, 10000);
   const MAPPING = [
     {
       id: '0',
@@ -81,14 +81,21 @@ export default function TabTwoScreen() {
 
   }
   const getPicture = () => {
-    setPic('this is the picture')
+    console.log('getting pic...')
+    const alpha = { "alpha": momentState.alpha }
+    console.log(alpha)
+    axios.post('http://esa-archive.hellomars.co/takepic', alpha).then( (res) => {
+      console.log(res)
+      setPic(res)
+    })
     return 'this is the picture, instead of this text'
   }
   const goodAzimuth = () => {
-    if (momentState.alpha < 1.57){
-      return <Button disabled title="Fix Azimuth ..." ></Button>
-    } else {
+    //momentState.alpha > 1.57
+    if (true){
       return <Button title="Take Picture" onPress={getPicture}></Button>
+    } else {
+      return <Button disabled title="Fix Azimuth ..." ></Button>
     }
   }
   const update = async () => {
@@ -96,7 +103,8 @@ export default function TabTwoScreen() {
   }
   const sendData = () => {
     console.log('Sending ...')
-    axios.post('http://ec2-52-15-90-21.us-east-2.compute.amazonaws.com:3000/rover', momentState).then((res)=> setDataSentMessage('Earth: we recieved your data!'))
+    update()
+    axios.post('http://esa-archive.hellomars.co:3000/data', momentState).then((res)=> setDataSentMessage('Earth: we recieved your data!'))
     //axios.post('http://ec2-52-15-90-21.us-east-2.compute.amazonaws.com:3000/rover', momentState).then((res)=> setDataSentMessage(JSON.stringify(res.data)))
 
   }
@@ -126,6 +134,7 @@ export default function TabTwoScreen() {
       <Text>gamma: {Number(momentState.gamma).toFixed(5)}</Text> */}
       </View>
       <Text>Azimuth: {momentState.alpha}</Text>
+      <Button title="Take Picture" onPress={sendData}></Button>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
 
       <Text>Mission Control asks you to take the picture</Text>

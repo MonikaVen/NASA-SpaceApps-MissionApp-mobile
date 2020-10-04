@@ -10,7 +10,7 @@ export default function TabOneScreen() {
   function retrieveMessage() {
     // let message = fetch('http://ec2-52-15-90-21.us-east-2.compute.amazonaws.com:3000/');
     setMessageState('Retrieving message...');
-    axios.get('http://ec2-52-15-90-21.us-east-2.compute.amazonaws.com:3000/').then((res)=> setMessageState(res.data))
+    axios.get('http://esa-archive.hellomars.co:3000/mars').then((res)=> setMessageState(res.data))
   }
   return (
     <View style={styles.container}>
